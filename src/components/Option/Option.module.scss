@@ -1,0 +1,24 @@
+.Option {
+	padding: 5px 10px;
+	border: 1px solid rgba(17, 103, 184, 0.7);
+	border-radius: 6px;
+	margin-bottom: 10px;
+
+	transition: 0.2s;
+
+	&:hover {
+		cursor: pointer;
+		background-color: rgba(32, 71, 197, 0.1);
+	}
+
+	&[data-checked="true"] {
+		background-color: rgba(0, 119, 255, 0.342);
+		border-radius: 2px;
+		border-color: transparent;
+		box-shadow: rgba(0,0,0, 0.3) 6px 8px 5px -2px;
+	}
+
+	pre, code {
+		font-family: "Jetbrains Mono", "Consolas", "Cascadia Code", 'Courier New', Courier, monospace;
+	}
+}

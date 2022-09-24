@@ -1,0 +1,25 @@
+.QuizContainer {
+	font-family: "Open Sans", Verdana, Geneva, Tahoma, sans-serif;
+	padding: 15px;
+	background-color: rgba(black, 0.05);
+
+	&[data-full-width] {
+		display: block;
+	}
+	&:not([data-full-width]) {
+		display: inline-block;
+		clear: both;
+	}
+}
+
+.QuizStage {
+	padding: 5px;
+	margin-bottom: 20px;
+}
+
+// html[data-theme="dark"] {
+// 	.QuizContainer {
+// 		background-color: rgba(black, 0.9);
+// 		color: white;
+// 	}
+// }
