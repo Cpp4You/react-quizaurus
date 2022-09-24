@@ -19,12 +19,12 @@ BasicQuiz.args = {
 	setup: {
 		stages: [
 			{
-				label: "The first question",
+				title: "The first question",
 				correctAnswer: "2",
 				options: [
-					{ node: "1. Lorem ipsum dolor sit amet", value: "1" },
-					{ node: "2. Lorem ipsum dolor sit amet", value: "2" },
-					{ node: "3. Lorem ipsum dolor sit amet", value: "3" },
+					{ content: "1. Lorem ipsum dolor sit amet", value: "1" },
+					{ content: "2. Lorem ipsum dolor sit amet", value: "2" },
+					{ content: "3. Lorem ipsum dolor sit amet", value: "3" },
 				]
 			}
 		]
@@ -35,27 +35,28 @@ export const LongQuiz = Template.bind({});
 LongQuiz.args = {
 	title: "Long quiz",
 	setup: {
+		titleComponent: "h3",
 		stages: [
 			{
-				label: "1. What is the first code run by the computer",
+				title: "1. What is the first code run by the computer",
 				correctAnswer: "3",
 				maxChoices: 2,
 				options: [
-					{ node: "1. The include section at the top", value: "1" },
-					{ node: "2. The definition of the main function", value: "2" },
-					{ node: "3. The contents of the main function code block", value: "3" },
-					{ node: "4. Lorem ipsum dolor sit amet", value: "4" },
+					{ content: "1. The include section at the top", value: "1" },
+					{ content: "2. The definition of the main function", value: "2" },
+					{ content: <img src="https://picsum.photos/id/237/200/300" />, value: "3" },
+					{ content: "4. Lorem ipsum dolor sit amet", value: "4" },
 				]
 			},
 			{
-				label: "2. Which one is the valid code?",
+				title: "2. Which one is the valid code?",
 				correctAnswer: "2",
 				maxChoices: 1,
 				options: [
-					{ node: <>1. <code>{"std::cout < \"Hello, World!\";"}</code></>, value: "1" },
-					{ node: <>2. <code>{"std::cout << \"Hello, World!\";"}</code></>, value: "2" },
-					{ node: <>3. <code>{"std::cout > \"Hello, World!\";"}</code></>, value: "3" },
-					{ node: <>4. <code>{"std::cout >> \"Hello, World!\";"}</code></>, value: "4" },
+					{ content: <>1. <code>{"std::cout < \"Hello, World!\";"}</code></>, value: "1" },
+					{ content: <>2. <code>{"std::cout << \"Hello, World!\";"}</code></>, value: "2" },
+					{ content: <>3. <code>{"std::cout > \"Hello, World!\";"}</code></>, value: "3" },
+					{ content: <>4. <code>{"std::cout >> \"Hello, World!\";"}</code></>, value: "4" },
 				]
 			},
 		]

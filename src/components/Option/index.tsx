@@ -1,1 +1,5 @@
-export { default } from "./Option";
+export {
+	default,
+	defaultOptionComponent,
+	defaultOptionRenderer
+} from "./Option";
