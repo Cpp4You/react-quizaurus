@@ -8,9 +8,26 @@ type OptionCompType<P> = React.FunctionComponent<P> | React.ComponentClass<P> | 
 
 type OnReplySelectedHandler = (value: string) => void;
 
-type OptionRendererType = (option: OptionType, comp?: OptionCompType<any>, handler?: OnReplySelectedHandler, reply?: Choice) => JSX.Element;
+type ChoiceValidator = (choice: Choice, expected: Choice | any) => boolean;
+type ChoiceValidatorAuto = (choice: Choice) => boolean;
+
+type OptionRendererType = (option: OptionType, comp?: OptionCompType<any>, handler?: OnReplySelectedHandler, reply?: Choice, validate?: ChoiceValidator) => JSX.Element;
 
 type Choice = string | string[];
+
+
+export function defaultChoiceValidator(choice: Choice, expected: Choice | any): boolean {
+	if (typeof choice === "string") {
+		return choice === expected;
+	}
+
+	if (Array.isArray(expected)) {
+		// NOTE: assumes that `choice` and `expected` contains unique values
+		return choice.length === expected.length && choice.every(e => expected.includes(e));
+	}
+
+	return choice.length === 1 && choice[0] === expected;
+}
 
 export interface OptionType {
 	node: OptionNode,
@@ -18,21 +35,31 @@ export interface OptionType {
 }
 
 export class QuizStage {
-	label: React.ReactNode;
-	options?: OptionType[];
-	maxChoices? = 1;
-	optionComponent?: OptionCompType<any> = Option;
-	renderOption?: OptionRendererType;
+	label:				React.ReactNode;
+	options?:			OptionType[];
+	correctAnswer:		unknown;
+	validator?:			ChoiceValidator = defaultChoiceValidator;
+	maxChoices?			= 1;
+	optionComponent?:	OptionCompType<any> = Option;
+	renderOption?:		OptionRendererType;
 	
-	static defaultRenderOptionImpl(option: OptionType, comp?: OptionCompType<any>, onSelected?: OnReplySelectedHandler, choice?: Choice)
+	static defaultOptionRenderer(option: OptionType, comp?: OptionCompType<any>, onSelected?: OnReplySelectedHandler, choice?: Choice, validate?: ChoiceValidatorAuto)
 	{
 		const onSelectedHandler = () => onSelected?.(option.value);
 
 		const isChecked = choice ? (typeof choice === "string" ? choice === option.value : choice.indexOf(option.value) !== -1) : false;
+		let valid;
+		if (validate && choice) {
+			valid = validate(option.value);
+
+			if (!valid && !isChecked)
+				valid = undefined;
+		}
 
 		return React.createElement(comp || Option,
 			{
-				checked:	isChecked,
+				checked:	valid === undefined ? isChecked : undefined,
+				valid:		valid,
 				value:		option.value,
 				onSelected:	onSelectedHandler
 			}, option.node);
@@ -76,8 +103,13 @@ export default function Quiz(props: QuizProps)
 	const [stageIndex, setStageIndex] = React.useState(0);
 	const [choices, setChoices] = React.useState<Choice[]>([]);
 
+	const stageAt = (index: number) => props.setup.stages[ index ];
+	const currentStage = () => stageAt( stageIndex );
+	const isLastStage = () => stageIndex === maxStageIndex;
+	const isResultsStage = () => stageIndex === maxStageIndex + 1;
+
 	const handleOptionToggled = React.useCallback((value: string) => {
-		if ((props.setup.stages[ stageIndex ].maxChoices || 1) > 1)
+		if ((currentStage().maxChoices || 1) > 1)
 		{
 			setChoices(prev => [
 				...prev.slice(0, stageIndex),
@@ -94,21 +126,56 @@ export default function Quiz(props: QuizProps)
 		}
 	}, [stageIndex]);
 
-	const selectOptionRenderer = (r?: OptionRendererType) => r || QuizStage.defaultRenderOptionImpl;
+	const selectOptionRenderer = (r?: OptionRendererType) => r || QuizStage.defaultOptionRenderer;
 
-	const renderStage = (stage: QuizStage) => (
+	const previousStage = () => {
+		return setStageIndex(prev => Math.max(0, prev - 1));
+	};
+
+	const advanceStage = () => {
+		setStageIndex(prev => Math.min(prev + 1, maxStageIndex + 1));
+	};
+
+	const renderResults = () => {
+		return (
+			<>
+				<div>Results:</div>
+				{props.setup.stages.map((stage, idx) => renderStage(stage, idx, false, true))}
+			</>
+		);
+	};
+
+	const choiceValidator = (idx: number) => ( (choice: Choice) => (stageAt(idx).validator || defaultChoiceValidator)(choice, stageAt(idx).correctAnswer) );
+
+	const anyChoiceSelected = (index: number) => {
+		if (Array.isArray(choices[index]))
+			return choices[index].length > 0;
+		return choices[index]; // non-empty string
+	};
+
+	const renderStage = (stage: QuizStage, index: number, buttons = true, results = false) => (
 		<div key={stage.label?.toString()} className={styles.QuizStage}>
 			<h1>{stage.label}</h1>
-			{stage.options?.map(opt => (selectOptionRenderer(stage.renderOption))(opt, stage.optionComponent, handleOptionToggled, choices[stageIndex]))}
-			<button onClick={() => setStageIndex(prev => Math.max(0, prev - 1))}>Previous</button>
-			<button onClick={() => setStageIndex(prev => Math.min(prev + 1, maxStageIndex))}>Accept</button>
+			{stage.options?.map(opt => (selectOptionRenderer(stage.renderOption))(
+				opt,
+				stage.optionComponent,
+				handleOptionToggled,
+				choices[index],
+				results ? choiceValidator(index) : undefined
+			))}
+			{buttons && (<>
+				<button onClick={previousStage}>Previous</button>
+				<button onClick={advanceStage} disabled={!anyChoiceSelected(index)}>
+					{isLastStage() ? "Show results" : "Next question"}
+				</button>
+			</>)}
 		</div>
 	);
 
 	return (
 		<div className={styles.QuizContainer}>
 			{props.title}
-			{renderStage(props.setup.stages[stageIndex])}
+			{isResultsStage() ? renderResults() : renderStage(props.setup.stages[stageIndex], stageIndex)}
 		</div>
 	);
 }

@@ -18,6 +18,18 @@
 		box-shadow: rgba(0,0,0, 0.3) 6px 8px 5px -2px;
 	}
 
+	&[data-valid="true"] {
+		background-color: rgba(80, 250, 37, 0.767);
+		border-radius: 2px;
+		border-color: transparent;
+		box-shadow: rgba(0,0,0, 0.3) 6px 8px 5px -2px;
+	}
+
+	&[data-valid="false"] {
+		background-color: rgba(250, 37, 37, 0.767);
+		border-color: transparent;
+	}
+
 	pre, code {
 		font-family: "Jetbrains Mono", "Consolas", "Cascadia Code", 'Courier New', Courier, monospace;
 	}

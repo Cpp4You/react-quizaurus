@@ -20,6 +20,7 @@ BasicQuiz.args = {
 		stages: [
 			{
 				label: "The first question",
+				correctAnswer: "2",
 				options: [
 					{ node: "1. Lorem ipsum dolor sit amet", value: "1" },
 					{ node: "2. Lorem ipsum dolor sit amet", value: "2" },
@@ -37,6 +38,7 @@ LongQuiz.args = {
 		stages: [
 			{
 				label: "1. What is the first code run by the computer",
+				correctAnswer: "3",
 				maxChoices: 2,
 				options: [
 					{ node: "1. The include section at the top", value: "1" },
@@ -47,7 +49,8 @@ LongQuiz.args = {
 			},
 			{
 				label: "2. Which one is the valid code?",
-				maxChoices: 2,
+				correctAnswer: "2",
+				maxChoices: 1,
 				options: [
 					{ node: <>1. <code>{"std::cout < \"Hello, World!\";"}</code></>, value: "1" },
 					{ node: <>2. <code>{"std::cout << \"Hello, World!\";"}</code></>, value: "2" },
