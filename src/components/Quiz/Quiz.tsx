@@ -1,5 +1,5 @@
 import React from "react";
-import QuizSetup from "../../QuizSetup";
+import QuizSetup, { ComponentAnyProps } from "../../QuizSetup";
 
 import { QuizSetupContext }	from "../../contexts";
 
@@ -9,18 +9,47 @@ import Choice, {
 
 import styles from "./Quiz.module.scss";
 import StagePagination from "../StagePagination";
+import { pick } from "../../helper";
 
-export interface QuizProps {
-	title?: string;
-	setup: QuizSetup;
+export const defaultTitleComponent = "h1";
+
+export function defaultTitleRenderer(comp: ComponentAnyProps, content: React.ReactNode)
+{
+	return React.createElement(comp, { className: "quizaurus__QuizTitle" }, content);
 }
+
+export type TitleRenderer = (comp: ComponentAnyProps, content: React.ReactNode) => JSX.Element;
+export interface QuizProps {
+	setup: QuizSetup;
+
+	title?: string;
+	theme?: "dark" | "light" | "custom";
+
+	titleComponent?: ComponentAnyProps;
+	titleRenderer?: TitleRenderer;
+}
+
+const themeClasses = {
+	"dark":		` ${styles.darkTheme || ""} ${styles.builtinTheme}`,
+	"light":	` ${styles.lightTheme || ""} ${styles.builtinTheme}`,
+	"custom":	"" // no additional class
+};
 
 export default function Quiz(props: QuizProps)
 {
 	const [choices, setChoices] = React.useState<Choice[]>([]);
 
+	const setup = props.setup;
+
+	React.useEffect(() => {
+		const emptyChoices: Choice[] = [];
+		for (let i = 0; i < setup.stages.length; ++i)
+			emptyChoices.push([]);
+		setChoices(emptyChoices);
+	}, []);
+
 	const handleOptionToggled = React.useCallback((stageIndex: number, value: string) => {
-		if ((props.setup.stages[stageIndex].maxChoices || 1) > 1)
+		if ((setup.stages[stageIndex].maxChoices || 1) > 1)
 		{
 			setChoices(prev => [
 				...prev.slice(0, stageIndex),
@@ -37,11 +66,13 @@ export default function Quiz(props: QuizProps)
 		}
 	}, []);
 
+	const titleComponent	= pick(props.titleComponent, defaultTitleComponent);
+	const titleRenderer		= pick(props.titleRenderer, defaultTitleRenderer);
 
 	return (
-		<div className={styles.QuizContainer}>
-			<QuizSetupContext.Provider value={props.setup}>
-				{props.title}
+		<div className={"quizaurus__Quiz" + themeClasses[props.theme || "light"]}>
+			<QuizSetupContext.Provider value={setup}>
+				{titleRenderer(titleComponent, props.title)}
 				<StagePagination choices={choices} onOptionToggled={handleOptionToggled} />
 			</QuizSetupContext.Provider>
 		</div>
