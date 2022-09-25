@@ -35,17 +35,22 @@ const themeClasses = {
 	"custom":	"" // no additional class
 };
 
+const generateEmptyChoiceArray = (count: number) => {
+	const emptyChoices: Choice[] = [];
+	for (let i = 0; i < count; ++i)
+		emptyChoices.push([]);
+	return emptyChoices;
+};
+
 export default function Quiz(props: QuizProps)
 {
 	const [choices, setChoices] = React.useState<Choice[]>([]);
 
 	const setup = props.setup;
 
+	// Note: Absolutely essential for choice-related logic to work properly!
 	React.useEffect(() => {
-		const emptyChoices: Choice[] = [];
-		for (let i = 0; i < setup.stages.length; ++i)
-			emptyChoices.push([]);
-		setChoices(emptyChoices);
+		setChoices(generateEmptyChoiceArray(setup.stages.length));
 	}, []);
 
 	const handleOptionToggled = React.useCallback((stageIndex: number, value: string) => {
@@ -60,7 +65,7 @@ export default function Quiz(props: QuizProps)
 		else {
 			setChoices(prev => [
 				...prev.slice(0, stageIndex),
-				value,
+				[ value ],
 				...prev.slice(stageIndex + 1)
 			]);
 		}

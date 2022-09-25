@@ -23,13 +23,13 @@ export function defaultOptionRenderer(
 {
 	const onSelectedHandler = () => onSelected?.(option.value);
 
-	const isChecked = choice ? (typeof choice === "string" ? choice === option.value : choice.indexOf(option.value) !== -1) : false;
+	const isChecked = choice ? choice.indexOf(option.value) !== -1 : false;
 
 	// Validate if needed
 	let valid;
 	if (validate && choice)
 	{
-		valid = validate(option.value);
+		valid = validate([ option.value ]);
 
 		// Skip invalid options if not selected to avoid flooding with red color :)
 		if (!valid && !isChecked)
