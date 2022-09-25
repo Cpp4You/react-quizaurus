@@ -1,32 +1,39 @@
 import React from "react";
-import Choice from "../../Choice";
-import { QuizStage } from "../../QuizSetup";
-import StageOptions from "../StageOptions";
-import StageTitle from "../StageTitle";
 
-import styles from "./StageLayout.module.scss";
+import StageDescription		from "../StageDescription";
+import StageOptions			from "../StageOptions";
+import StageTitle			from "../StageTitle";
+
+import Choice				from "../../Choice";
+import { QuizStage }		from "../../QuizSetup";
+
+import styles				from "./StageLayout.module.scss";
 
 export interface StageLayoutProps {
 	stage: QuizStage;
 	choice: Choice;
-	isResultsPage?: boolean;
+	verifyOptions?: boolean;
+	revealCorrect?: boolean;
 	onOptionToggled?: (value: string) => void;
 }
 
 export default function StageLayout({
 	stage,
 	choice,
-	isResultsPage,
+	verifyOptions,
+	revealCorrect,
 	onOptionToggled,
 }: StageLayoutProps) {
 
 	return (
 		<div key={stage.title?.toString()} className={styles.QuizStage}>
 			<StageTitle stage={stage} />
+			{stage.desc && <StageDescription stage={stage} />}
 			<StageOptions
 				stage={stage}
 				choice={choice}
-				isResultsPage={isResultsPage}
+				revealCorrect={revealCorrect}
+				verifyOption={verifyOptions}
 				onOptionToggled={onOptionToggled}
 			/>
 		</div>

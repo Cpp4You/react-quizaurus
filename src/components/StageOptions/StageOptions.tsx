@@ -1,5 +1,5 @@
 import React from "react";
-import Choice, { defaultChoiceTransformer, defaultChoiceValidator } from "../../Choice";
+import Choice, { defaultOptionTransformer, defaultOptionValidator } from "../../Choice";
 import { QuizSetupContext } from "../../contexts";
 import { QuizStage } from "../../QuizSetup";
 import { defaultOptionComponent, defaultOptionRenderer } from "../Option";
@@ -7,33 +7,47 @@ import { pick } from "../../helper";
 
 export interface StageOptionsProps {
 	stage: QuizStage;
-	isResultsPage?: boolean;
+	verifyOption?: boolean;
+	revealCorrect?: boolean;
 	choice: Choice;
 	onOptionToggled?: (value: string) => void;
 }
 
-export default function StageOptions({ stage, choice, isResultsPage, onOptionToggled }: StageOptionsProps) {
+export default function StageOptions({
+	stage,
+	choice,
+	verifyOption,
+	revealCorrect,
+	onOptionToggled
+}: StageOptionsProps) {
 
 	const setup = React.useContext(QuizSetupContext);
 
 	const component		= pick(stage.optionComponent,	setup.optionComponent,		defaultOptionComponent);
 	const renderer		= pick(stage.renderOption,		setup.renderOption,			defaultOptionRenderer);
-	const transformer	= pick(stage.choiceTransformer,	setup.choiceTransformer,	defaultChoiceTransformer);
-	const validator		= pick(stage.validator,			setup.validator,			defaultChoiceValidator);
-
-	const validatorWrapper = (choice: Choice) => validator(choice, stage.correctAnswer, transformer);
+	const transformer	= pick(stage.optionTransformer,	setup.optionTransformer,	defaultOptionTransformer);
+	const validator		= pick(stage.validator,			setup.validator,			defaultOptionValidator);
 
 	return (
 		<>
-			{stage.options?.map(opt => (
-				renderer(
+			{stage.options?.map(option => {
+				const selected = choice ? choice.indexOf(option.value) !== -1 : false;
+				const validateResult = validator(option.value, stage.correctAnswer, transformer);
+
+				let correct;
+				if (revealCorrect && validateResult)
+					correct = true;
+				else if (selected && verifyOption)
+					correct = validateResult;
+
+				return renderer(
 					component,
-					opt,
-					choice,
-					isResultsPage ? undefined : onOptionToggled,
-					isResultsPage ? validatorWrapper : undefined
-				)))
-			}
+					option,
+					selected,
+					correct,
+					onOptionToggled
+				);
+			})}
 		</>
 	);
 }

@@ -18,7 +18,7 @@ export default function StageTitle({ stage }: StageTitleProps) {
 	const setup = React.useContext(QuizSetupContext);
 
 	const component	= pick(stage.titleComponent,	setup.titleComponent,	defaultStageTitleComponent);
-	const renderer	= pick(stage.renderTitle,		setup.renderTitle,		defaultStageTitleRenderer);
+	const renderer	= pick(stage.renderStageTitle,	setup.renderStageTitle,	defaultStageTitleRenderer);
 
 	return renderer(component, stage.title);
 }

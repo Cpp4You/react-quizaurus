@@ -6,7 +6,7 @@
 
 	transition: 0.2s;
 
-	&:hover {
+	&:not([data-readonly]):not([data-correct]):not([data-checked]):hover {
 		cursor: pointer;
 		background-color: rgba(32, 71, 197, 0.1);
 	}
@@ -17,15 +17,28 @@
 		border-color: transparent;
 		box-shadow: rgba(0,0,0, 0.3) 6px 8px 5px -2px;
 	}
-
-	&[data-valid="true"] {
-		background-color: rgba(80, 250, 37, 0.767);
+	&[data-correct="true"] {
+		background-image: repeating-linear-gradient(
+			-50deg,
+			transparent,
+			transparent 20px,
+			rgba(136, 255, 136, 0.4) 20px,
+			rgba(136, 255, 136, 0.4) 40px
+		  );
 		border-radius: 2px;
 		border-color: transparent;
 		box-shadow: rgba(0,0,0, 0.3) 6px 8px 5px -2px;
 	}
+	&[data-correct="true"][data-checked="true"] {
+		background-image: none;
+		border-style: solid;
+		border-color: transparent;
+		background-color: rgba(80, 250, 37, 0.767);
+	}
 
-	&[data-valid="false"] {
+	
+
+	&[data-correct="false"] {
 		background-color: rgba(250, 37, 37, 0.767);
 		border-color: transparent;
 	}
