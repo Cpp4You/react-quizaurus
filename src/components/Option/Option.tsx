@@ -38,6 +38,7 @@ export function defaultOptionRenderer(
 
 	return React.createElement(comp,
 		{
+			key:		option.value,
 			checked:	valid === undefined ? isChecked : undefined,
 			valid:		valid,
 			value:		option.value,
