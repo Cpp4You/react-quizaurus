@@ -11,7 +11,7 @@ export interface QuizStageLayoutProps {
 	choice: Choice;
 	isResultsPage?: boolean;
 	navigationButtons?: React.ReactNode;
-	onOptionToggled: (value: string) => void;
+	onOptionToggled?: (value: string) => void;
 }
 
 export default function QuizStageLayout({

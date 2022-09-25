@@ -9,7 +9,7 @@ export interface QuizStageOptionsProps {
 	stage: QuizStage;
 	isResultsPage?: boolean;
 	choice: Choice;
-	onOptionToggled: (value: string) => void;
+	onOptionToggled?: (value: string) => void;
 }
 
 export default function QuizStageOptions({ stage, choice, isResultsPage, onOptionToggled }: QuizStageOptionsProps) {

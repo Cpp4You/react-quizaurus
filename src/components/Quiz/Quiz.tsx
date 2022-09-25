@@ -3,9 +3,10 @@ import QuizSetup, {
 	QuizStage,
 } from "../../QuizSetup";
 
-import QuizSetupContext		from "../../contexts";
-import StageNavigation		from "../StageNavigation";
-import QuizStageLayout		from "../StageLayout";
+import QuizSetupContext	from "../../contexts";
+import StageNavigation	from "../StageNavigation";
+import QuizStageLayout	from "../StageLayout";
+import QuizResults		from "../Results";
 
 import Choice, {
 	toggleChoice
@@ -85,23 +86,6 @@ export default function Quiz(props: QuizProps)
 		/>
 	);
 
-	const renderResults = () => {
-		return (
-			<>
-				<div>Results:</div>
-				{props.setup.stages.map((stage, idx) => (
-					<QuizStageLayout
-						key={idx}
-						stage={stage}
-						isResultsPage={true}
-						choice={choices[idx]}
-						onOptionToggled={handleOptionToggled}
-					/>
-				))}
-			</>
-		);
-	};
-
 	
 	return (
 		<div className={styles.QuizContainer}>
@@ -109,7 +93,7 @@ export default function Quiz(props: QuizProps)
 				{props.title}
 				{isResultsStage()
 					?
-					renderResults()
+					<QuizResults choices={choices}/>
 					:
 					renderSingleStage(currentStage(), currentStageIndex)
 				}
