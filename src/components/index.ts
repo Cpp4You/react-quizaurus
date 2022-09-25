@@ -5,4 +5,3 @@ export { default as StagePagination }	from "./StagePagination";
 export { default as StageTitle }		from "./StageTitle";
 export { default as StageOptions }		from "./StageOptions";
 export { default as StageLayout }		from "./StageLayout";
-export { default as Results }			from "./Results";
