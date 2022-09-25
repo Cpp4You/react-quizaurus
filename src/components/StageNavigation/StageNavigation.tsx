@@ -13,6 +13,7 @@ export function defaultNavButtonRenderer(comp: ComponentAnyProps, content: React
 export interface QuizStageNavButtonsProps {
 
 	allowNext?: boolean;
+	allowPrevious?: boolean;
 	isLastStage?: boolean;
 
 	onPreviousClicked: () => void;
@@ -21,6 +22,7 @@ export interface QuizStageNavButtonsProps {
 
 export default function QuizStageNavButtons({
 	allowNext,
+	allowPrevious,
 	isLastStage,
 	onPreviousClicked,
 	onNextClicked
@@ -32,7 +34,10 @@ export default function QuizStageNavButtons({
 
 	return (
 		<>
-			{renderer(component, "Previous", { onClick: onPreviousClicked })}
+			{renderer(component, "Previous", {
+				onClick: onPreviousClicked,
+				disabled: !allowPrevious
+			})}
 			{renderer(component, isLastStage ? "Show results" : "Next question", {
 				onClick: onNextClicked,
 				disabled: !allowNext

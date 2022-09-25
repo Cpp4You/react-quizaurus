@@ -10,7 +10,6 @@ export interface QuizStageLayoutProps {
 	stage: QuizStage;
 	choice: Choice;
 	isResultsPage?: boolean;
-	navigationButtons?: React.ReactNode;
 	onOptionToggled?: (value: string) => void;
 }
 
@@ -18,7 +17,6 @@ export default function QuizStageLayout({
 	stage,
 	choice,
 	isResultsPage,
-	navigationButtons,
 	onOptionToggled,
 }: QuizStageLayoutProps) {
 
@@ -31,7 +29,6 @@ export default function QuizStageLayout({
 				isResultsPage={isResultsPage}
 				onOptionToggled={onOptionToggled}
 			/>
-			{navigationButtons}
 		</div>
 	);
 }

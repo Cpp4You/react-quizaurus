@@ -1,5 +1,5 @@
 import React from "react";
-import QuizSetupContext from "../../contexts";
+import { QuizSetupContext } from "../../contexts";
 import { ComponentAnyProps, QuizStage } from "../../QuizSetup";
 import { pick } from "../../helper";
 

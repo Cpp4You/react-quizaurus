@@ -3,16 +3,17 @@ import QuizSetup, {
 	QuizStage,
 } from "../../QuizSetup";
 
-import QuizSetupContext	from "../../contexts";
-import StageNavigation	from "../StageNavigation";
-import QuizStageLayout	from "../StageLayout";
-import QuizResults		from "../Results";
+import { QuizSetupContext }	from "../../contexts";
+import StageNavigation		from "../StageNavigation";
+import QuizStageLayout		from "../StageLayout";
+import QuizResults			from "../Results";
 
 import Choice, {
 	toggleChoice
 } from "../../Choice";
 
 import styles from "./Quiz.module.scss";
+import StagePagination from "../StagePagination";
 
 
 ////////////////////////////////////////////////////////////////////////
@@ -28,75 +29,32 @@ export interface QuizProps {
 
 export default function Quiz(props: QuizProps)
 {
-	const [currentStageIndex, setStageIndex] = React.useState(0);
 	const [choices, setChoices] = React.useState<Choice[]>([]);
 	
-	const maxStageIndex		= props.setup.stages.length - 1;
-
-	const stageAt			= (index: number) => props.setup.stages[ index ];
-	const currentStage		= () => stageAt( currentStageIndex );
-	const isResultsStage	= () => currentStageIndex === maxStageIndex + 1;
-
-	const handleOptionToggled = React.useCallback((value: string) => {
-		if ((currentStage().maxChoices || 1) > 1)
+	const handleOptionToggled = React.useCallback((stageIndex: number, value: string) => {
+		if ((props.setup.stages[stageIndex].maxChoices || 1) > 1)
 		{
 			setChoices(prev => [
-				...prev.slice(0, currentStageIndex),
-				toggleChoice(prev[currentStageIndex], value),
-				...prev.slice(currentStageIndex + 1)
+				...prev.slice(0, stageIndex),
+				toggleChoice(prev[stageIndex], value),
+				...prev.slice(stageIndex + 1)
 			]);
 		}
 		else {
 			setChoices(prev => [
-				...prev.slice(0, currentStageIndex),
+				...prev.slice(0, stageIndex),
 				value,
-				...prev.slice(currentStageIndex + 1)
+				...prev.slice(stageIndex + 1)
 			]);
 		}
-	}, [currentStageIndex]);
+	}, []);
 
-	const previousStage = () => {
-		return setStageIndex(prev => Math.max(0, prev - 1));
-	};
 
-	const advanceStage = () => {
-		setStageIndex(prev => Math.min(prev + 1, maxStageIndex + 1));
-	};
-
-	const isAnyChoiceSelected = (choice: Choice) => {
-		if (Array.isArray(choice))
-			return choice.length > 0;
-		return !!choice; // non-empty string
-	};
-
-	const renderSingleStage = (stage: QuizStage, index: number) => (
-		<QuizStageLayout
-			key={index}
-			stage={stage}
-			choice={choices[index]}
-			onOptionToggled={handleOptionToggled}
-			navigationButtons={
-				<StageNavigation
-					isLastStage={index === maxStageIndex}
-					allowNext={isAnyChoiceSelected(choices[index])}
-					onNextClicked={advanceStage}
-					onPreviousClicked={previousStage}
-				/>
-			}
-		/>
-	);
-
-	
 	return (
 		<div className={styles.QuizContainer}>
 			<QuizSetupContext.Provider value={props.setup}>
 				{props.title}
-				{isResultsStage()
-					?
-					<QuizResults choices={choices}/>
-					:
-					renderSingleStage(currentStage(), currentStageIndex)
-				}
+				<StagePagination choices={choices} onOptionToggled={handleOptionToggled} />
 			</QuizSetupContext.Provider>
 		</div>
 	);

@@ -1,7 +1,7 @@
-import React			from "react";
-import Choice			from "../../Choice";
-import QuizSetupContext	from "../../contexts";
-import QuizStageLayout	from "../StageLayout";
+import React				from "react";
+import Choice				from "../../Choice";
+import { QuizSetupContext }	from "../../contexts";
+import QuizStageLayout		from "../StageLayout";
 
 export interface QuizResultsProps {
 	choices: Choice[];

@@ -1,6 +1,6 @@
 import React from "react";
 import Choice, { defaultChoiceTransformer, defaultChoiceValidator } from "../../Choice";
-import QuizSetupContext from "../../contexts";
+import { QuizSetupContext } from "../../contexts";
 import { QuizStage } from "../../QuizSetup";
 import { defaultOptionComponent, defaultOptionRenderer } from "../Option";
 import { pick } from "../../helper";
