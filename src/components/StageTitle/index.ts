@@ -1,1 +1,1 @@
-export { default, defaultTitleComponent } from "./StageTitle";
+export { default, defaultStageTitleComponent as defaultTitleComponent } from "./StageTitle";
