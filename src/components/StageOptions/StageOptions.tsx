@@ -5,14 +5,14 @@ import { QuizStage } from "../../QuizSetup";
 import { defaultOptionComponent, defaultOptionRenderer } from "../Option";
 import { pick } from "../../helper";
 
-export interface QuizStageOptionsProps {
+export interface StageOptionsProps {
 	stage: QuizStage;
 	isResultsPage?: boolean;
 	choice: Choice;
 	onOptionToggled?: (value: string) => void;
 }
 
-export default function QuizStageOptions({ stage, choice, isResultsPage, onOptionToggled }: QuizStageOptionsProps) {
+export default function StageOptions({ stage, choice, isResultsPage, onOptionToggled }: StageOptionsProps) {
 
 	const setup = React.useContext(QuizSetupContext);
 

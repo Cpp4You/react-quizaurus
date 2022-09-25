@@ -4,7 +4,7 @@ import QuizSetup, {
 } from "../../QuizSetup";
 
 import { QuizSetupContext }	from "../../contexts";
-import StageNavigation		from "../StageNavigation";
+import StageNavigation		from "../PageNavigation";
 import QuizStageLayout		from "../StageLayout";
 import QuizResults			from "../Results";
 

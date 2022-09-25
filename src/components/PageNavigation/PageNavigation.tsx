@@ -10,7 +10,7 @@ export function defaultNavButtonRenderer(comp: ComponentAnyProps, content: React
 }
 
 
-export interface QuizStageNavButtonsProps {
+export interface PageNavigationProps {
 
 	allowNext?: boolean;
 	allowPrevious?: boolean;
@@ -20,13 +20,13 @@ export interface QuizStageNavButtonsProps {
 	onNextClicked: () => void;
 }
 
-export default function QuizStageNavButtons({
+export default function PageNavigation({
 	allowNext,
 	allowPrevious,
 	isLastStage,
 	onPreviousClicked,
 	onNextClicked
-}: QuizStageNavButtonsProps)
+}: PageNavigationProps)
 {
 
 	const renderer	= pick(defaultNavButtonRenderer);

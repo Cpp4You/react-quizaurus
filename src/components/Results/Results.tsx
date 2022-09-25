@@ -3,11 +3,11 @@ import Choice				from "../../Choice";
 import { QuizSetupContext }	from "../../contexts";
 import QuizStageLayout		from "../StageLayout";
 
-export interface QuizResultsProps {
+export interface ResultsProps {
 	choices: Choice[];
 }
 
-export default function QuizResults({ choices }: QuizResultsProps) {
+export default function Results({ choices }: ResultsProps) {
 	const setup = React.useContext(QuizSetupContext);
 
 	return (

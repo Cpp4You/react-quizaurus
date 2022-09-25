@@ -10,11 +10,11 @@ export function defaultTitleRenderer(comp: ComponentAnyProps, content: React.Rea
 	return React.createElement(comp, {}, content); // `content` is passed as children!
 }
 
-export interface QuizStageTitleProps {
+export interface StageTitleProps {
 	stage: QuizStage;
 }
 
-export default function QuizStageTitle({ stage }: QuizStageTitleProps) {
+export default function StageTitle({ stage }: StageTitleProps) {
 	const setup = React.useContext(QuizSetupContext);
 
 	const component	= pick(stage.titleComponent,	setup.titleComponent,	defaultTitleComponent);

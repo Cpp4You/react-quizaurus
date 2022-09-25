@@ -1,8 +1,9 @@
-import React from "react";
-import Choice from "../../Choice";
-import { QuizSetupContext } from "../../contexts";
-import StageLayout from "../StageLayout";
-import StageNavigation from "../StageNavigation";
+import React				from "react";
+import Choice				from "../../Choice";
+import StageLayout			from "../StageLayout";
+import PageNavigation		from "../PageNavigation";
+
+import { QuizSetupContext }	from "../../contexts";
 
 export interface StagePaginationProps {
 	choices: Choice[];
@@ -15,11 +16,10 @@ export default function StagePagination({ choices, onOptionToggled }: StagePagin
 
 	const setup	= React.useContext(QuizSetupContext);
 
-	const stagesPerPage = setup.stagesPerPage || 1;
+	const stagesPerPage	= setup.stagesPerPage || 1;
 
-	const start	= page * stagesPerPage;
-	const end	= Math.min(start + stagesPerPage, setup.stages.length);
-
+	const start			= page * stagesPerPage;
+	const end			= Math.min(start + stagesPerPage, setup.stages.length);
 	const maxPageIndex	= setup.stages.length / stagesPerPage - 1;
 
 	const isValidPage	= (idx: number) => (idx * stagesPerPage) < setup.stages.length;
@@ -56,7 +56,7 @@ export default function StagePagination({ choices, onOptionToggled }: StagePagin
 					/>
 				);
 			})}
-			<StageNavigation
+			<PageNavigation
 				isLastStage={!showResults && isLastPage}
 				allowNext={!showResults || !isLastPage}
 				allowPrevious={page > 0}

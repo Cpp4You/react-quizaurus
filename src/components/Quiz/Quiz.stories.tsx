@@ -36,6 +36,7 @@ LongQuiz.args = {
 	title: "Long quiz",
 	setup: {
 		titleComponent: "h3",
+		stagesPerPage: 2,
 		stages: [
 			{
 				title: "1. What is the first code run by the computer",
