@@ -1,0 +1,29 @@
+:global(.quizaurus__BuiltinTheme) :global(.quizaurus__NavigationButton) {
+	min-width: 100px;
+	min-height: 30px;
+	padding: 8px 20px;
+	font-size: 100%;
+	background-color: rgb(131, 216, 255);
+	border: none;
+	border-bottom: 4px solid rgb(44, 143, 255);
+	border-radius: 5px;
+	font-weight: 600;
+
+	transition: background-color 0.2s;
+
+	&:disabled {
+		color: rgb(54, 54, 54);
+		background-color: rgb(195, 215, 224);
+		border-color:rgb(54, 54, 54);
+	}
+	&:not(:disabled) {
+		&:hover {
+			cursor: pointer;
+			background-color: rgb(169, 228, 255);
+		}
+	}
+	&:active {
+		transform: translate(1px, 2px);
+		border-bottom-width: 2px;
+	}
+}

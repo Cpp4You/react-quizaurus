@@ -6,3 +6,4 @@ export { default as StageTitle }		from "./StageTitle";
 export { default as StageDescription }	from "./StageDescription";
 export { default as StageOptions }		from "./StageOptions";
 export { default as StageLayout }		from "./StageLayout";
+export { default as NavigationButton }	from "./NavigationButton";

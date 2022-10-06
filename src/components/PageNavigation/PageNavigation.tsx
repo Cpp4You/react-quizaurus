@@ -1,8 +1,10 @@
 import React from "react";
+import { QuizSetupContext } from "../../contexts";
 import { pick } from "../../helper";
 import { ComponentAnyProps } from "../../QuizSetup";
+import NavigationButton from "../NavigationButton";
 
-export const defaultNavButtonComponent	= "button";
+export const defaultNavButtonComponent = NavigationButton;
 
 export function defaultNavButtonRenderer(comp: ComponentAnyProps, content: React.ReactNode, props?: React.ComponentProps<"button">)
 {
@@ -29,19 +31,32 @@ export default function PageNavigation({
 }: PageNavigationProps)
 {
 
+	const context = React.useContext(QuizSetupContext);
+
+	const navigation = context.navigation;
+
 	const renderer	= pick(defaultNavButtonRenderer);
 	const component	= pick(defaultNavButtonComponent);
 
 	return (
 		<>
-			{renderer(component, "Previous", {
-				onClick: onPreviousClicked,
-				disabled: !allowPrevious
-			})}
-			{renderer(component, isLastStage ? "Show results" : "Next question", {
-				onClick: onNextClicked,
-				disabled: !allowNext
-			})}
+			{renderer(
+				component,
+				pick(navigation?.prev, "Previous"),
+				{
+					onClick: onPreviousClicked,
+					disabled: !allowPrevious
+				})}
+			{renderer(
+				component,
+				isLastStage ?
+					pick(navigation?.results, "Show results")
+					:
+					pick(navigation?.next, "Next"),
+				{
+					onClick: onNextClicked,
+					disabled: !allowNext
+				})}
 		</>
 	);
 }
