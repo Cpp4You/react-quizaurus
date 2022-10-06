@@ -1,3 +1,4 @@
+import React from "react";
 import {
 	ChoiceOption,
 	OptionTransformer,
@@ -24,6 +25,11 @@ export default interface QuizSetup
 	stagesPerPage?: number;
 
 	/**
+	 * Navigation settings.
+	*/
+	navigation?: NavigationSetup;
+
+	/**
 	 * Can the user proceed to next quiz pages (or questions if questions per page = 1)
 	 * even if previous questions were not answered completely (see {@linkcode QuizStage.requiredAnswers}).
 	 *
@@ -31,6 +37,12 @@ export default interface QuizSetup
 	 */
 	allowIncompleteAnswers?: boolean;
 // eslint-disable-next-line semi
+}
+
+export interface NavigationSetup {
+	next?: React.ReactNode;
+	prev?: React.ReactNode;
+	results?: React.ReactNode;
 }
 
 /**
