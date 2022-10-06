@@ -1,17 +1,23 @@
+$font: "Open Sans", Verdana, Geneva, Tahoma, sans-serif;
+
+
 :global(.quizaurus__Quiz) {
-	&.builtinTheme {
-		font-family: "Open Sans", Verdana, Geneva, Tahoma, sans-serif;
+	&:global(.quizaurus__BuiltinTheme) {
+		font-family: $font;
+		p, button, li, a, input, textarea, select, label {
+			font-family: $font;
+		}
 		padding: 20px 25px;
 		min-width: 600px;
 	}
 
-	&.darkTheme {
+	&:global(.quizaurus__DarkTheme) {
 		color: white;
 		background-color: rgba(black, 0.85);
 		border: 1px solid gray;
 	}
 
-	&.lightTheme {
+	&:global(.quizaurus__LightTheme) {
 		color: black;
 		background-color: white;
 		border: 1px solid lightgray;

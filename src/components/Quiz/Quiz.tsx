@@ -9,7 +9,7 @@ import Choice, {
 	toggleChoice
 } from "../../Choice";
 
-import styles from "./Quiz.module.scss";
+import "./Quiz.module.scss";
 import StagePagination from "../StagePagination";
 import { pick } from "../../helper";
 
@@ -43,8 +43,8 @@ export interface QuizProps {
 }
 
 const themeClasses = {
-	"dark":		` ${styles.darkTheme || ""} ${styles.builtinTheme}`,
-	"light":	` ${styles.lightTheme || ""} ${styles.builtinTheme}`,
+	"dark":		" quizaurus__DarkTheme quizaurus__BuiltinTheme",
+	"light":	" quizaurus__LightTheme quizaurus__BuiltinTheme",
 	"custom":	"" // no additional class
 };
 
